@@ -12,7 +12,7 @@ const cm = new CModule(`
 
     uint32_t length = (input_buf_len > BUF_LEN) ? BUF_LEN : input_buf_len;
     memcpy((void *)regs->rdi, input_buf, length);
-    regs->rdx = length;
+    regs->rsi = length;
   }
   `,
   {
