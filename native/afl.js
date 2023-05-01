@@ -11,8 +11,8 @@ const cm = new CModule(`
     uint32_t input_buf_len) {
 
     uint32_t length = (input_buf_len > BUF_LEN) ? BUF_LEN : input_buf_len;
-    memcpy((void *)regs->x[0], input_buf, length);
-    regs->x[1] = length;
+    //memcpy((void *)regs->x[0], input_buf, length);
+    //regs->x[1] = length;
   }
   `,
   {
