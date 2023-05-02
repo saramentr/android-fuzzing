@@ -32,6 +32,8 @@ int main(void) {
   int status;
   const uint8_t buffer[BUFFER_SIZE];
   char* options = "-Djava.class.path=/data/local/tmp/mock.dex";
+//  char* options = "-Djava.class.path=/data/local/tmp/qb.blogfuzz.apk";
+  
 
   ssize_t rlength = fread((void*)buffer, 1, BUFFER_SIZE, stdin);
   if (rlength == -1) return errno;
