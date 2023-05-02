@@ -10,7 +10,7 @@ extern jobject Java_qb_blogfuzz_NativeHelper_fuzzMeWrapper(JNIEnv*, jclass,
                                                            jbyteArray);
 
 static JavaCTX ctx;
-
+void aaa(){return;};
 void fuzz_one_input(const uint8_t* buffer, size_t length) {
   jbyteArray jBuffer = (*ctx.env)->NewByteArray(ctx.env, length);
   (*ctx.env)->SetByteArrayRegion(ctx.env, jBuffer, 0, length,
@@ -26,6 +26,7 @@ void fuzz_one_input(const uint8_t* buffer, size_t length) {
 
   (*ctx.env)->DeleteLocalRef(ctx.env, objWrapper);
   (*ctx.env)->DeleteLocalRef(ctx.env, jBuffer);
+  aaa();
 }
 
 int main(void) {
