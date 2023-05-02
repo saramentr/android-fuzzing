@@ -9,6 +9,7 @@
 extern jobject Java_qb_blogfuzz_NativeHelper_fuzzMeArray(JNIEnv *, jclass,
                                                          jbyteArray);
 
+void aaa(){return;};
 /* Java context */
 static JavaCTX ctx;
 
@@ -21,6 +22,7 @@ void fuzz_one_input(const uint8_t *buffer, size_t length) {
   Java_qb_blogfuzz_NativeHelper_fuzzMeArray(ctx.env, NULL, jBuffer);
 
   (*ctx.env)->DeleteLocalRef(ctx.env, jBuffer);
+  aaa();
 }
 
 int main(void) {
