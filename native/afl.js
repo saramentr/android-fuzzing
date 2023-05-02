@@ -22,12 +22,27 @@ const cm = new CModule(`
 
 
 const pStartAddr = DebugSymbol.fromName("fuzz_one_input").address;
+const retAddr = DebugSymbol.fromName("aaa").address;
 
 Afl.setPersistentHook(cm.afl_persistent_hook);
 Afl.setPersistentAddress(pStartAddr);
 Afl.setEntryPoint(pStartAddr);
+Afl.setPersistentReturn(retAddr);
+//Afl.setPersistentCount(1000000);
 Afl.setInMemoryFuzzing();
 Afl.setInstrumentLibraries();
+//Afl.setStdOut("/data/local/tmp/stdout.txt");
+//Afl.setStdErr("/data/local/tmp/stderr.txt");
+//Afl.setDebugMaps();
+//Afl.setInstrumentDebugFile("/data/local/tmp/instr.log");
+Afl.setPrefetchDisable();
+Afl.setInstrumentNoOptimize();
+//Afl.setInstrumentEnableTracing();
+//Afl.setInstrumentTracingUnique();
+//Afl.setStatsFile("/data/local/tmp/stats.txt");
+//Afl.setStatsInterval(1);
+
+
 
 Afl.done();
 Afl.print("[*] All done!");
