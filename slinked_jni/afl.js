@@ -6,8 +6,7 @@ const MODULE_WHITELIST = [
   "libblogfuzz.so",
 ];
 
-/* Persistent hook */
-const hook_module = new CModule(`
+const cm = new CModule(`
   #include <string.h>
   #include <gum/gumdefs.h>
 
@@ -17,14 +16,19 @@ const hook_module = new CModule(`
     uint32_t input_buf_len) {
 
     uint32_t length = (input_buf_len > BUF_LEN) ? BUF_LEN : input_buf_len;
-    memcpy((void *)regs->x[0], input_buf, length);
-    regs->x[1] = length;
+    memcpy((void *)regs->rdi, input_buf, length);
+    regs->rsi = length;
   }
   `,
   {
     memcpy: Module.getExportByName(null, "memcpy")
   }
 );
+
+
+const pStartAddr = DebugSymbol.fromName("fuzz_one_input").address;
+const retAddr = DebugSymbol.fromName("aaa").address;
+
 
 /* Persistent loop start address */
 const pPersistentAddr = DebugSymbol.fromName("fuzz_one_input").address;
@@ -38,12 +42,25 @@ new ModuleMap().values().forEach(m => {
   }
 });
 
-Afl.setEntryPoint(pPersistentAddr);
-Afl.setPersistentHook(hook_module.afl_persistent_hook);
-Afl.setPersistentAddress(pPersistentAddr);
-Afl.setPersistentCount(10000);
+Afl.setPersistentHook(cm.afl_persistent_hook);
+Afl.setPersistentAddress(pStartAddr);
+Afl.setEntryPoint(pStartAddr);
+Afl.setPersistentReturn(retAddr);
+//Afl.setPersistentCount(1000000);
 Afl.setInMemoryFuzzing();
 Afl.setInstrumentLibraries();
+//Afl.setStdOut("/data/local/tmp/stdout.txt");
+//Afl.setStdErr("/data/local/tmp/stderr.txt");
+//Afl.setDebugMaps();
+//Afl.setInstrumentDebugFile("/data/local/tmp/instr.log");
+Afl.setPrefetchDisable();
+Afl.setInstrumentNoOptimize();
+//Afl.setInstrumentEnableTracing();
+//Afl.setInstrumentTracingUnique();
+//Afl.setStatsFile("/data/local/tmp/stats.txt");
+//Afl.setStatsInterval(1);
+
+
 
 Afl.done();
 Afl.print("[*] All done!");
